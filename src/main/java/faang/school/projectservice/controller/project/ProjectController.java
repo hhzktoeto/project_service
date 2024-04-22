@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -55,9 +59,17 @@ public class ProjectController {
         return projectService.findAllProjects();
     }
 
+    @Async
+    @Cacheable(cacheNames = "projectId", key = "#projectId")
     @Operation(summary = "Find project by project id")
     @GetMapping("/{projectId}")
     public ProjectDto findProjectById(@PathVariable @Positive(message = "id must be greater than zero") Long projectId) {
         return projectService.findProjectById(projectId);
+    }
+
+    @Operation(summary = "Add cover to project")
+    @PutMapping("/{projectId}/add")
+    public ProjectDto addACoverToTheProject(@PathVariable @Positive(message = "id must be greater than zero") Long projectId, @RequestParam("file") MultipartFile file) {
+        return projectService.addACoverToTheProject(projectId, file);
     }
 }

@@ -1,13 +1,16 @@
 package faang.school.projectservice.service.project;
 
+import faang.school.projectservice.config.context.UserContext;
 import faang.school.projectservice.dto.project.ProjectDto;
 import faang.school.projectservice.dto.project.ProjectFilterDto;
 import faang.school.projectservice.mapper.ProjectMapperImpl;
 import faang.school.projectservice.model.Project;
 import faang.school.projectservice.model.ProjectStatus;
 import faang.school.projectservice.model.ProjectVisibility;
+import faang.school.projectservice.publisher.projectview.ProjectViewEventPublisher;
 import faang.school.projectservice.repository.ProjectRepository;
 import faang.school.projectservice.service.project.filter.ProjectFilter;
+import faang.school.projectservice.service.resource.ResourceService;
 import faang.school.projectservice.validation.project.ProjectValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +41,9 @@ public class ProjectServiceTest {
     private ProjectFilter projectFilter;
     private List<ProjectFilter> projectFilters;
     private ProjectService projectService;
+    private UserContext userContext;
+    private ResourceService resourceService;
+    private ProjectViewEventPublisher projectViewEventPublisher;
 
     @BeforeEach
     void setUp() {
@@ -45,7 +51,10 @@ public class ProjectServiceTest {
         projectValidator = mock(ProjectValidator.class);
         projectFilter = mock(ProjectFilter.class);
         projectFilters = Collections.singletonList(projectFilter);
-        projectService = new ProjectService(projectMapper, projectRepository, projectValidator, projectFilters);
+        userContext = mock(UserContext.class);
+        projectViewEventPublisher = mock(ProjectViewEventPublisher.class);
+        resourceService = mock(ResourceService.class);
+        projectService = new ProjectService(projectMapper, projectRepository, projectValidator, projectFilters, userContext, resourceService, projectViewEventPublisher);
     }
 
     @Test
