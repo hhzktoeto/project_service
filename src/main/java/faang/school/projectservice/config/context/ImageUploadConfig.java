@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ImageUploadConfig {
 
-    @Value("${servlet.multipart.max-file-size}")
-    private long maxFileSize;
+    @Value("${image.upload.maxFileSize}")
+    private Long maxFileSize;
 
     @Value("${image.upload.landscape.maxWidth}")
     private int maxWidthLandscape;

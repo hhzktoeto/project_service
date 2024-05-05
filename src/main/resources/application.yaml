@@ -26,6 +26,8 @@ spring:
           name: calculations_channel
         project_view_channel:
           name: project_view_channel
+        project_create_channel:
+          name: project_create
 
 server:
   port: 8082
@@ -48,6 +50,7 @@ services:
 
 image:
   upload:
+    maxFileSize: 5242880
     landscape.maxWidth: 1080
     landscape.maxHeight: 566
     square.maxWidth: 1080
